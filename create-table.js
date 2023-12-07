@@ -32,10 +32,16 @@ connection.connect((err) => {
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(`It seems that table ${tableName} already exists.`);
-
-      return;
+    } else {
+      console.log(`TABLE ${tableName} succesfully created! 🎉 (Or already existing)`)
     };
 
-    console.log(`TABLE ${tableName} succesfully created! 🎉 (Or already existing)`)
+    connection.end((err) => {
+      if (err) {
+        console.error(`Closing connection to ${connection.config.database} for creating table ${tableName}: FAILED!`);
+        return;
+      }
+      console.log(`Connection to ${connection.config.database}: CLOSED 😉`)
+    })
   });
 })

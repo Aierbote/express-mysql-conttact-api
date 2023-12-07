@@ -22,10 +22,16 @@ connection.connect((err) => {
   connection.query(`CREATE DATABASE ${dbName}`, (err, result) => {
     if (err) {
       console.log(`It seems that db ${dbName} already exists.`);
-
-      return;
+    } else {
+      console.log(`Database ${dbName} succesfully created! 🎉`);
     };
 
-    console.log(`Database ${dbName} succesfully created! 🎉`);
+    connection.end((err) => {
+      if (err) {
+        console.error(`Closing connection to ${connection.config.database} for creating db ${dbName}: FAILED!`);
+        return;
+      }
+      console.log(`Connection to ${connection.config.database}: CLOSED 😉`)
+    })
   });
 })
