@@ -87,7 +87,27 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   msg = `<p>Deleting Contact with id:<b>${req.params.id}</b></p>`;
-  res.send(msg);
+  sql = `DELETE FROM Contatti WHERE id = ${req.params.id}`;
+
+  conn.query(sql, (err, results) => {
+    if (err) {
+      console.error(`Problem during delete '/:id': ${err.message}`);
+      res.status(500).send('Internal Server Error');
+    }
+
+    // // raw result
+    // res.json(results);
+
+    // slightly formatted
+    msg = `
+        ${msg}
+        <p>QUERY: ${sql}</p>
+        <p>Results:</p>
+        <!-- TODO: make it into a list with forEach() -->
+        <p>${JSON.stringify(results)}</p>
+      `;
+    res.send(msg);
+  });
 });
 
 
