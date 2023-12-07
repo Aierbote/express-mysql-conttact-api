@@ -20,15 +20,17 @@ router.get("/", (req, res) => {
   msg = `<h1>📇 Contatti route is displaying data</h1>`;
   sql = `SELECT * FROM ${tableName}`;
 
+
   conn.query(sql, (err, results) => {
     if (err) {
       console.error(`Problem during GET '/': ${err.message}`);
-      res.status(500).send('Errore del server');
+      res.status(500).send('Internal Server Error');
     }
 
     // // raw result
     // res.json(results);
 
+    // slightly formatted
     msg = `
       ${msg}
       <p>QUERY: ${sql}</p>
@@ -40,28 +42,53 @@ router.get("/", (req, res) => {
   });
 })
 
+
 router.get("/:id", (req, res) => {
   msg = `<p>Looking for Contact with id:<b>${req.params.id}</b></p>`;
+  sql = `SELECT * FROM ${tableName} WHERE id = ${req.params.id}`;
 
   if (req.params.id == 42) {
     msg += `<img src="http://media.salon.com/2016/03/douglas_adams.jpg" alt="42! Pics of the famous Novel by Douglas Adams" title="DON'T PANIC 👍">`;
   };
-  res.send(msg);
-})
+
+  conn.query(sql, (err, results) => {
+    if (err) {
+      console.error(`Problem during GET '/:id': ${err.message}`);
+      res.status(500).send('Internal Server Error');
+    }
+
+    // // raw result
+    // res.json(results);
+
+    // slightly formatted
+    msg = `
+      ${msg}
+      <p>QUERY: ${sql}</p>
+      <p>Results:</p>
+      <!-- TODO: make it into a list with forEach() -->
+      <p>${JSON.stringify(results)}</p>
+    `;
+    res.send(msg);
+  });
+});
+
 
 router.post("/", (req, res) => {
   msg = `<p>Sending info to create a Contact 👽</p>`;
   res.send(msg)
 });
 
+
 router.put("/:id", (req, res) => {
   msg = `<p>Sending info to update Contact with id:<b>${req.params.id}</b></p>`;
   res.send(msg);
 })
 
+
 router.delete("/:id", (req, res) => {
   msg = `<p>Deleting Contact with id:<b>${req.params.id}</b></p>`;
   res.send(msg);
 });
+
 
 module.exports = router;
