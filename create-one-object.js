@@ -31,11 +31,11 @@ connection.connect((err) => {
 
 
   // IN CASE: CREATE TABLE
-  const sql = `CREATE TABLE ${tableName} (
-    id INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(45) DEFAULT NULL,
-    telefono VARCHAR(13) DEFAULT NULL,
-    email VARCHAR(45) DEFAULT NULL,
+  const sql = `CREATE TABLE IF NOT EXISTS \`${tableName}\` (
+    \`id\` INT NOT NULL AUTO_INCREMENT,
+    \`nome\` VARCHAR(45) DEFAULT NULL,
+    \`telefono\` VARCHAR(13) DEFAULT NULL,
+    \`email\` VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (id)
   ) `;
   connection.query(sql, (err, result) => {
