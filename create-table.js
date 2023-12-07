@@ -7,14 +7,16 @@ const tableName = "Contatti";
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
+  port: 3306,
   database: dbName,
 });
 
 connection.connect((err) => {
   console.log(`Connecting to database named ${dbName}...`);
   if (err) {
-    console.log(`FAILED! Server localhost:3306 may not be online.`);
-    throw err;
+    console.log(`FAILED! Server ${connection.config.host}:${connection.config.port} may not be online.`);
+
+    return
   };
 
   console.log("Connected!");
@@ -30,9 +32,10 @@ connection.connect((err) => {
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(`It seems that table ${tableName} already exists.`);
-      throw err;
+
+      return;
     };
 
-    console.log(`TABLE ${tableName} succesfully created! 🎉`)
+    console.log(`TABLE ${tableName} succesfully created! 🎉 (Or already existing)`)
   });
 })

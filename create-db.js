@@ -3,16 +3,18 @@ const mysql = require("mysql");
 
 // variables
 const dbName = "NodeDB";
-const connection = mysql.createConnection({
+const connection = mysql.createConnection({  // a config object as arg
   host: "localhost",
-  user: "root"
+  user: "root",
+  port: 3306
 });
 
 connection.connect((err) => {
   console.log(`Connecting to database named ${dbName}...`);
   if (err) {
-    console.log(`FAILED! Server localhost:3306 mayb not be online.`);
-    throw err;
+    console.log(`FAILED! Server ${connection.config.host}:${connection.config.port} may not be online at the moment.`);
+
+    return;
   };
 
   console.log("Connected!");
@@ -20,9 +22,10 @@ connection.connect((err) => {
   connection.query(`CREATE DATABASE ${dbName}`, (err, result) => {
     if (err) {
       console.log(`It seems that db ${dbName} already exists.`);
-      throw err;
+
+      return;
     };
 
-    console.log(`Database ${dbName} succesfully created! 🎉`)
+    console.log(`Database ${dbName} succesfully created! 🎉`);
   });
 })
