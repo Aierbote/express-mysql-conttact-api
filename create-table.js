@@ -13,13 +13,20 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
   console.log(`Connecting to database named ${dbName}...`);
   if (err) {
-    console.log(`FAILED! Server localhost:3306 mayb not be online.`);
+    console.log(`FAILED! Server localhost:3306 may not be online.`);
     throw err;
   };
 
   console.log("Connected!");
 
-  const sql = `CREATE TABLE ${tableName} (nome VARCHAR(255), telefono VARCHAR(13), email VARCHAR(255)) `;
+  const sql = `
+    CREATE TABLE ${tableName} (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(45) DEFAULT NULL,
+    telefono VARCHAR(13) DEFAULT NULL,
+    email VARCHAR(45) DEFAULT NULL,
+    PRIMARY KEY (id)
+  `;
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(`It seems that table ${tableName} already exists.`);
