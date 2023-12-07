@@ -31,7 +31,13 @@ connection.connect((err) => {
 
 
   // IN CASE: CREATE TABLE
-  const sql = `CREATE TABLE ${tableName} (nome VARCHAR(255), telefono VARCHAR(13), email VARCHAR(255)) `;
+  const sql = `CREATE TABLE ${tableName} (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(45) DEFAULT NULL,
+    telefono VARCHAR(13) DEFAULT NULL,
+    email VARCHAR(45) DEFAULT NULL,
+    PRIMARY KEY (id)
+  ) `;
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(`It seems that table ${tableName} already exists.`);
