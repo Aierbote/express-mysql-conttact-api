@@ -1,6 +1,6 @@
 # Simulazione API custom
 
-## Esercitazione6
+## Esercitazione 6
 
 Costruire una applicazione RESTful API con Express.js.
 
@@ -13,7 +13,7 @@ Costruire una applicazione RESTful API con Express.js.
 2. Per ciascuna rotta restituire come risposta una stringa di testo.
 3. Testare l'API: utilizzare uno strumento come Postman per testare l'API, inviando richieste a ogni route e verificando che venga restituita la risposta corretta.
 
-## Esercitazione7
+## Esercitazione 7
 
 1. Crea degli script Node.js per
    - creare un database MySQL chiamato `NodeDB`
