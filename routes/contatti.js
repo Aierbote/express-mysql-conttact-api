@@ -1,6 +1,9 @@
 // imports
 const express = require("express");
-const mysql = require("mysql");
+// NOTE : replaced `mysql` with `mysql2`
+const mysql = require('mysql2');
+// NOTE : replacing express.json() with body-parser.json
+const bodyParser = require("body-parser");
 
 // variables
 let msg; // message to render in html as response
@@ -14,7 +17,10 @@ const conn = mysql.createConnection({
 });
 const tableName = "Contatti";
 
-router.use(express.json());
+// to parse `application/x-www-form-urlencoded`
+router.use(bodyParser.urlencoded({ extended: false }));
+// to parse `application/json`
+router.use(bodyParser.json());
 
 router.get("/", (req, res) => {
   msg = `<h1>📇 Contatti route is displaying data</h1>`;
@@ -75,7 +81,38 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   msg = `<p>Sending info to create a Contact 👽</p>`;
-  res.send(msg)
+  sql = `
+    INSERT INTO Contatti (nome, telefono, email)
+    VALUES (?,?,?)
+  `;
+  // NOTE : using `req.query` instead of `req.body` or `req.params`
+  const { nome, telefono, email } = req.query;
+
+  conn.query(
+    sql,
+    [nome, telefono, email],
+    (err, results) => {
+      if (err) {
+        console.error(`Problem during post '/': ${err.message}`);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // // raw result
+      // res.json(results);
+
+      // slightly formatted
+      sql = sql.replace(`(?,?,?)`, `(${nome},${telefono},${email})`);
+      msg = `
+        ${msg}
+        <p>QUERY: ${sql}</p>
+        <p>Results:</p>
+        <!-- TODO: make it into a list with forEach() -->
+        <p>${JSON.stringify(results)}</p>
+      `;
+      res.send(msg);
+    }
+  );
 });
 
 
