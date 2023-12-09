@@ -118,7 +118,46 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   msg = `<p>Sending info to update Contact with id:<b>${req.params.id}</b></p>`;
-  res.send(msg);
+  sql = `
+    UPDATE Contatti SET
+    nome = ?,
+    telefono = ?,
+    email = ?
+    WHERE id = ?
+  `;
+
+
+
+  const id = req.params.id;
+  const { nome, telefono, email } = req.query;
+
+  conn.query(
+    sql,
+    [nome, telefono, email, id],
+    (err, results) => {
+      if (err) {
+        console.error(`Problem during put '/:id': ${err.message}`);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // // raw result
+      // res.json(results);
+
+      // slightly formatted
+      let values = [nome, telefono, email, id]
+      // replace any `?` (escaped) in a regex (delimited by `/`), with `g` global mode (not just first occurence)
+      sql = sql.replace(/\?/g, () => values.shift() || "");
+      msg = `
+        ${msg}
+        <p>QUERY: ${sql}</p>
+        <p>Results:</p>
+        <!-- TODO: make it into a list with forEach() -->
+        <p>${JSON.stringify(results)}</p>
+      `;
+      res.send(msg);
+    }
+  );
 })
 
 
