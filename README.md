@@ -19,3 +19,16 @@ Costruire una applicazione RESTful API con Express.js.
    - creare un database MySQL chiamato `NodeDB`
    - creare una tabella `Contatti (nome, telefono, email)`
 2. Utilizzando lo scheletro dell’esercitazione precedente (Express RESTful API), per ogni endpoint definito creare la corrispondente API per inserire, aggiornare ed elencare i dati della tabella `Contatti`.
+
+## Esercitazione 8
+
+1. Crea degli script Node.js per
+   - creare un database MongoDB chiamato `NodeDB`
+   - creare una collection `Contatti (nome, telefono, email)`
+1. Utilizzando lo scheletro dell’esercitazione su Express RESTful API, per ogni endpoint definito creare la corrispondente API per inserire, aggiornare ed elencare i dati della collection `Contatti` di MongoDB.
+1. In particolare le rotte da da gestire sono:
+   - `GET /contatti`
+   - `GET /contatti/:id`
+   - `POST /contatti`
+   - `PUT /contatti/:id`
+   - `DELETE /contatti/:id`
